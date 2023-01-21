@@ -42,7 +42,7 @@ model Day {
 
   dayHabits DayHabit[]
 
-  @@index([date])
+  @@unique([date])
   @@map("days")
 }
 
