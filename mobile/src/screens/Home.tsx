@@ -1,4 +1,5 @@
 import { View, Text, ScrollView } from "react-native"
+import { useNavigation } from "@react-navigation/native"
 
 import { generateDatesFromYearBeginning } from '../utils/generate-dates-from-year-beginning'
 
@@ -11,6 +12,8 @@ const minimumSummaryDatesSizes = 18 * 5
 const amountOfDaysToFill = minimumSummaryDatesSizes - datesFromYearBeginning.length
 
 export function Home() {
+  const { navigate } = useNavigation()
+
   return (
     <View className="flex-1 bg-background px-8 pt-16">
       <Header />
@@ -28,23 +31,26 @@ export function Home() {
           ))
         }
       </View>
-      <ScrollView 
-        showsVerticalScrollIndicator={false} 
+      <ScrollView
+        showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 100 }}
       >
         <View className="flex-row flex-wrap">
           {
             datesFromYearBeginning.map(date => (
-              <HabitDay key={date.toISOString()} />
+              <HabitDay
+                key={date.toISOString()}
+                onPress={() => navigate('habit', { date: date.toISOString() })} />
             ))
           }
           {
             amountOfDaysToFill > 0 && Array
-              .from({length: amountOfDaysToFill})
+              .from({ length: amountOfDaysToFill })
               .map((_, index) => (
-                <View   
-                  className="bg-zinc-900 rounded-lg border-2 m-1 border-zinc-800 opacity-40" 
-                  style={{width: DAY_SIZE, height: DAY_SIZE}}
+                <View
+                  key={index}
+                  className="bg-zinc-900 rounded-lg border-2 m-1 border-zinc-800 opacity-40"
+                  style={{ width: DAY_SIZE, height: DAY_SIZE }}
                 />
               ))
           }
